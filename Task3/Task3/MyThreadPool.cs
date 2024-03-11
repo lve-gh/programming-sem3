@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 
 public class MyThreadPool
 {
+    static void Main(string[] args) {}
     private ThreadMy[] threads;
     private volatile bool running = true;
     private volatile int ToQueue = 0;
