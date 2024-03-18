@@ -4,24 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hw1
+namespace Task1
 {
+    /// <summary>
+    /// Class with functions of matrix multiplication.
+    /// </summary>
     public class MatrixMultiplicationClass
     {
+        /// <summary>
+        /// Multiplicate the matrix.
+        /// </summary>
         public static int[,] Multiplication(int[,] a, int[,] b)
         {
-            var t1 = DateTime.Now;
-            if (a == null || b == null)
-                return null;
-            //if (a.GetLength(1) != b.GetLength(0)) throw new Exception("Матрицы нельзя перемножить");
+            var timeStart = DateTime.Now;
+            ArgumentNullException.ThrowIfNull(a);
+            ArgumentNullException.ThrowIfNull(b);
             if (a.Length / a.GetLength(0) != b.GetLength(0))
             {
-                Console.WriteLine("Матрицы нельзя перемножить");
-                //int[,] empty;
-                // Возврат пустой матрицы
-                return null;
+                throw new Exception("Матрицы нельзя перемножить");
             }
-            int[,] r = new int[a.GetLength(0), b.GetLength(1)];
+            int[,] newMatrix = new int[a.GetLength(0), b.GetLength(1)];
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 //counterTemp1++;
@@ -29,33 +31,31 @@ namespace hw1
                 {
                     for (int k = 0; k < b.GetLength(0); k++)
                     {
-                        r[i, j] += a[i, k] * b[k, j];
+                        newMatrix[i, j] += a[i, k] * b[k, j];
                     }
                 }
             }
-            var t2 = DateTime.Now - t1;
+            var timeTotal = DateTime.Now - timeStart;
             Console.WriteLine("Без многопоточки:");
-            Console.WriteLine(t2);
-            Console.WriteLine(r[0, 0]);
-            return r;
+            Console.WriteLine(timeTotal);
+            Console.WriteLine(newMatrix[0, 0]);
+            return newMatrix;
         }
 
-        //Функция, умножающая две матрицы (многопоточная)
+        /// <summary>
+        /// Multiplicate the matrix concurently.
+        /// </summary>
         public static int[,] MultiplicationConcurent(int[,] a, int[,] b)
         {
-            var t1 = DateTime.Now;
-            //if (a.GetLength(1) != b.GetLength(0)) throw new Exception("Матрицы нельзя перемножить");
-            if (a == null || b == null)
-                return null;
+            var timeStart = DateTime.Now;
+            ArgumentNullException.ThrowIfNull(a);
+            ArgumentNullException.ThrowIfNull(b);
             if (a.Length / a.GetLength(0) != b.GetLength(0))
             {
-                Console.WriteLine("Матрицы нельзя перемножить");
-                //int[,] empty;
-                // Возврат пустой матрицы
-                return null;
+                throw new Exception("Матрицы нельзя перемножить");
             }
-            int[,] r = new int[a.GetLength(0), b.GetLength(1)];
-            var threads = new Thread[12];
+            int[,] newMatrix = new int[a.GetLength(0), b.GetLength(1)];
+            var threads = new Thread[Environment.ProcessorCount];
             var chunkSize = (b.GetLength(1)) / threads.Length + 1;
             for (var m = 0; m < threads.Length; m++)
             {
@@ -68,7 +68,7 @@ namespace hw1
                         {
                             for (int k = 0; k < b.GetLength(0); k++)
                             {
-                                r[i, j] += a[i, k] * b[k, j];
+                                newMatrix[i, j] += a[i, k] * b[k, j];
 
                             }
                         }
@@ -80,12 +80,11 @@ namespace hw1
             foreach (var thread in threads)
                 thread.Join();
 
-            var t2 = DateTime.Now - t1;
+            var timeTotal = DateTime.Now - timeStart;
             Console.WriteLine("C многопоточкой:");
-            Console.WriteLine(t2);
-            //Console.WriteLine(r);
-            Console.WriteLine(r[0, 0]);
-            return r;
+            Console.WriteLine(timeTotal);
+            Console.WriteLine(newMatrix[0, 0]);
+            return newMatrix;
         }
     }
 }

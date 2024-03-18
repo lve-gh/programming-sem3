@@ -4,40 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hw1
+namespace Task1
 {
+    /// <summary>
+    /// Class of reading and writting matrixes.
+    /// </summary>
     public class MatrixWorkFileClass
     {
+        /// <summary>
+        /// Read the matrix.
+        /// </summary>
         public static int[,] MatrixRead(string path)
         {
-            StreamReader sr = null;
             if (!File.Exists(path))
-            {
-                Console.WriteLine("Файла нет");
-                return null;
-            }
-            else
-                sr = new StreamReader(path);
-            //Console.WriteLine(11);
+                throw new Exception("Матрицы нельзя перемножить");
+            StreamReader sr = new StreamReader(path);
             var data = sr.ReadToEnd();
 
             string[] dataSplit = data.Split();
 
             int rows = int.Parse(dataSplit[0]);
             int columns = int.Parse(dataSplit[1]);
-            int counterTemp = 2;
+            int readingIndex = 2;
             int[,] matrix = new int[rows, columns];
 
             for (int i = 0; i < rows;)
             {
                 for (int j = 0; j < columns;)
                 {
-                    if (dataSplit[counterTemp] != "\n" && dataSplit[counterTemp] != " " && dataSplit[counterTemp] != "\r" && dataSplit[counterTemp] != "")
+                    if (dataSplit[readingIndex] != "\n" && dataSplit[readingIndex] != " " && dataSplit[readingIndex] != "\r" && dataSplit[readingIndex] != "")
                     {
-                        matrix[i, j] = int.Parse(dataSplit[counterTemp]);
+                        matrix[i, j] = int.Parse(dataSplit[readingIndex]);
                         j++;
                     }
-                    counterTemp++;
+                    readingIndex++;
                 }
                 i++;
             }
@@ -45,9 +45,12 @@ namespace hw1
             sr.Close();
             return matrix;
         }
+        /// <summary>
+        /// Write the matrix.
+        /// </summary>
         public static void MatrixWrite(int[,] matrix, string path)
         {
-            StreamWriter sw = new StreamWriter(path, true);
+            StreamWriter sw = new StreamWriter(path, false);
             sw.WriteLine(matrix.GetLength(0) + " " + matrix.GetLength(0));
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
