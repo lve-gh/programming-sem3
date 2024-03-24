@@ -1,13 +1,11 @@
-namespace MatrixMultiplication.tests;
+namespace MatrixMultiplication.Tests;
 
 using Task1;
-using System.Numerics;
-using System.Diagnostics;
 
 public class Tests
 {
     [Test]
-    public void Mutptiplication()
+    public void Multiplication_Matrixes()
     {
 
         int[,] a = { { 1, 5 },
@@ -20,14 +18,14 @@ public class Tests
 
         int[,] exceptedMatrix = { { 21, 50 }, { 42, 74 } };
 
-        Debug.Assert(exceptedMatrix[0, 0] == actualMatrix[0, 0]);
-        Debug.Assert(exceptedMatrix[0, 1] == actualMatrix[0, 1]);
-        Debug.Assert(exceptedMatrix[1, 0] == actualMatrix[1, 0]);
-        Debug.Assert(exceptedMatrix[1, 1] == actualMatrix[1, 1]);
+        Assert.That(exceptedMatrix[0, 0] == actualMatrix[0, 0]);
+        Assert.That(exceptedMatrix[0, 1] == actualMatrix[0, 1]);
+        Assert.That(exceptedMatrix[1, 0] == actualMatrix[1, 0]);
+        Assert.That(exceptedMatrix[1, 1] == actualMatrix[1, 1]);
     }
 
     [Test]
-    public void isSimilar()
+    public void Is_Similar()
     {
         int[,] a = { { 5, 1 },
                      { 7, 0 } };
@@ -37,9 +35,9 @@ public class Tests
 
         int[,] nonConcurent = MatrixMultiplicationClass.Multiplication(a, b);
         int[,] concurent = MatrixMultiplicationClass.MultiplicationConcurent(a, b);
-        Debug.Assert(nonConcurent[0, 0] == concurent[0, 0]);
-        Debug.Assert(nonConcurent[0, 1] == concurent[0, 1]);
-        Debug.Assert(nonConcurent[1, 0] == concurent[1, 0]);
-        Debug.Assert(nonConcurent[1, 1] == concurent[1, 1]);
+        Assert.That(nonConcurent[0, 0] == concurent[0, 0]);
+        Assert.That(nonConcurent[0, 1] == concurent[0, 1]);
+        Assert.That(nonConcurent[1, 0] == concurent[1, 0]);
+        Assert.That(nonConcurent[1, 1] == concurent[1, 1]);
     }
 }
